@@ -1,4 +1,4 @@
-- id: 'numbers or whatever here'
+- id: 'numbersorwhateverhere'
   alias: Alarm - Chooser
   description: ''
   trigger:
