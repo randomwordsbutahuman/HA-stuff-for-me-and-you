@@ -1,0 +1,46 @@
+- id: 'numbers or whatever here'
+  alias: Alarm - Chooser
+  description: ''
+  trigger:
+  - minutes: /1
+    platform: time_pattern
+  condition:
+  - condition: template
+    value_template: '{{ now().strftime("%H:%M") == states(''input_datetime.alarm_time'')[0:5]
+      }}'
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_select.alarm_type
+        state: Muted
+      sequence:
+      - data:
+          brightness: 250
+          rgb_color:
+          - 255
+          - 200
+          - 145
+          transition: 24
+        entity_id: light.1
+        service: light.turn_on
+    - conditions:
+      - condition: state
+        entity_id: input_select.alarm_type
+        state: Musical
+      sequence:
+      - data:
+          brightness: 250
+          rgb_color:
+          - 255
+          - 200
+          - 145
+          transition: 24
+        entity_id: light.1
+        service: light.turn_on
+      - condition: state
+        entity_id: binary_sensor.bedroom_speaker_active
+        state: 'on'
+      - data: {}
+        service: script.music_alarm
+  mode: single
