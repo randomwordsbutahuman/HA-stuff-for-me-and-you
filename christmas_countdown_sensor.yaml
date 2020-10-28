@@ -1,0 +1,16 @@
+- platform: template
+  sensors:
+   christmas_countdown:
+    friendly_name: "Christmas Countdown"
+    value_template: "{% set midnight = now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() %}
+{% set event = now().strftime('%Y-12-25') | as_timestamp %}
+{% set delta = ((event - midnight) // 86400) | int %}
+{% if delta < 0 %}
+ {{ -delta }} Days Ago
+{% elif delta == 0 %}
+ Today!
+{% elif delta == 1 %}
+ Tomorrow
+{% else %}
+ In {{ delta }} Days
+{% endif %}"
