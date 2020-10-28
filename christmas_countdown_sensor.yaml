@@ -2,15 +2,12 @@
   sensors:
    christmas_countdown:
     friendly_name: "Christmas Countdown"
+    unit_of_measurement: days
     value_template: "{% set midnight = now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() %}
 {% set event = now().strftime('%Y-12-25') | as_timestamp %}
 {% set delta = ((event - midnight) // 86400) | int %}
 {% if delta < 0 %}
- {{ -delta }} Days Ago
-{% elif delta == 0 %}
- Today!
-{% elif delta == 1 %}
- Tomorrow
+ {{ ((-delta +365)) }}
 {% else %}
- In {{ delta }} Days
+ {{ delta }}
 {% endif %}"
