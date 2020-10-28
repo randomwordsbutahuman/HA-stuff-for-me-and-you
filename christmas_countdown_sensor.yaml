@@ -7,7 +7,7 @@
 {% set event = now().strftime('%Y-12-25') | as_timestamp %}
 {% set delta = ((event - midnight) // 86400) | int %}
 {% if delta < 0 %}
- {{ ((-delta +365)) }}
+ {{ ((365 +delta)) }}
 {% else %}
  {{ delta }}
 {% endif %}"
