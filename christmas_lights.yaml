@@ -7,7 +7,7 @@ blueprint:
   input:
     xmas_lights:
       name: Devices to control
-      description: Lights or Switches to be turned on/off
+      description: Lights or Switches to be turned on or off
       selector:
         target:
          device:
