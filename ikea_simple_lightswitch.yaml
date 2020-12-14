@@ -61,5 +61,5 @@ action:
         sequence:
           - service: light.turn_on
             target: !input light
-			data:
+	      data:
               brightness_pct: 100
