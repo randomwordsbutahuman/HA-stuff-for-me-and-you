@@ -12,6 +12,7 @@ blueprint:
         target:
             device:
               entity:
+              
     wled_lights:
         name: WLED devices
         description: Any WLED lights to dim automatically (nightlight mode)
