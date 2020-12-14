@@ -9,7 +9,8 @@ blueprint:
       name: Xmas lights
       description: Lights to turn on or off
       selector:
-        target: device
+         target:
+            device:
     wled_lights:
         name: WLED devices
         description: Any WLED lights to dim automatically (nightlight mode)
