@@ -36,7 +36,7 @@ trigger:
     event_data:
       command: move_with_on_off
       device_id: !input remote
-condition: []
+
 action:
   - choose:
       - conditions:
