@@ -10,7 +10,8 @@ blueprint:
       description: Lights or Switches to be turned on/off
       selector:
         target:
-         entity:
+         device:
+          entity:
            domain: switch
     wled_lights:
         name: WLED devices
