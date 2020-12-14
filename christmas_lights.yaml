@@ -22,7 +22,7 @@ blueprint:
       description: Time at which selected lights will turn off
       selector:
         time:
-	sleep_time:
+    sleep_time:
       name: Sleep Time
       description: Time at which WLED devices will start dimming
       selector:
