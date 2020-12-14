@@ -6,13 +6,13 @@ blueprint:
   domain: automation
   input:
     xmas_lights:
-      name: Xmas lights
+      name: "Xmas lights"
       description: Lights to turn on or off
       selector:
         target:
           device:
     wled_lights:
-        name: WLED devices
+        name: "WLED devices"
         description: Any WLED lights to dim automatically (nightlight mode)
         selector:
             target:
