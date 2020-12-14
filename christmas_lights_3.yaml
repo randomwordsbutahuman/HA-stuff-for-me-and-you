@@ -10,7 +10,7 @@ blueprint:
       description: Lights or Switches to be turned on/off
       selector:
         target:
-          device:
+          entity:
     wled_lights:
         name: WLED devices
         description: Any WLED lights to dim automatically (nightlight mode)
