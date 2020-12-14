@@ -8,14 +8,14 @@ blueprint:
   	xmas_lights:
            name: Devices to control
               description: Lights or Switches to be turned on/off
-                 selector:
-                    domain: switch
-	wled_lights:
-		name: WLED devices
-		description: Any WLED lights to dim automatically (nightlight mode)
-		selector:
-			device:
-				integration: WLED
+              selector:
+                 domain: switch
+        wled_lights:
+           name: WLED devices
+              description: Any WLED lights to dim automatically (nightlight mode)
+              selector:
+                 device:
+                    integration: WLED
 
     stop_time:
       name: Stop Time
