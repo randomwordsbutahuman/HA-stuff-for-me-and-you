@@ -1,6 +1,8 @@
 blueprint:
-  name: Ikea Zigbee Lightswitch
-  description: Toggle light based on Ikea switch
+  name: ZHA - IKEA switch
+  description: |
+    Simple on/off switch with hold to raise brightness to full
+
   domain: automation
   input:
     remote:
@@ -10,8 +12,10 @@ blueprint:
         device:
           integration: zha
           manufacturer: IKEA of Sweden
-    target_light:
-      name: Light
+          model: TRADFRI on/off switch
+    light:
+      name: Light(s)
+      description: The light(s) to control
       selector:
         target:
           entity:
@@ -24,37 +28,38 @@ trigger:
   - platform: event
     event_type: zha_event
     event_data:
-      command: 'on'
-      device_ieee: !input remote
-  - platform: event
-    event_type: zha_event
-    event_data:
-      command: 'off'
-      device_ieee: !input remote
-  - platform: event
-    event_type: zha_event
-    event_data:
-      command: move_with_on_off
-      device_ieee: !input remote
+      device_id: !input remote
 
 action:
+  - variables:
+      command: "{{ trigger.event.data.command }}"
+      cluster_id: "{{ trigger.event.data.cluster_id }}"
+      endpoint_id: "{{ trigger.event.data.endpoint_id }}"
+      args: "{{ trigger.event.data.args }}"
   - choose:
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == ''off'' }}'
-        sequence:
-          - service: light.turn_off
-            data: {}
-            entity_id: !input target_light
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == ''move_with_on_off'' }}'
+          - "{{ command == 'on' }}"
+          - "{{ cluster_id == 6 }}"
+          - "{{ endpoint_id == 1 }}"
         sequence:
           - service: light.turn_on
-            data:
+            target: !input light
+
+      - conditions:
+          - "{{ command == 'off' }}"
+          - "{{ cluster_id == 6 }}"
+          - "{{ endpoint_id == 1 }}"
+        sequence:
+          - service: light.turn_off
+            target: !input light
+
+      - conditions:
+          - "{{ command == 'move_with_on_off' }}"
+          - "{{ cluster_id == 8 }}"
+          - "{{ endpoint_id == 1 }}"
+          - "{{ args == [1, 83] }}"
+        sequence:
+          - service: light.turn_on
+            target: !input light
+			data:
               brightness_pct: 100
-            entity_id: !input target_light
-    default:
-      - service: light.turn_on
-        data: {}
-        entity_id: !input target_light
