@@ -1,7 +1,6 @@
 blueprint:
   name: Entity Unavailable Notification
-  description: |
-    Sends notification of which entity has lost connection
+  description: Sends notification of which entity has lost connection
 
   domain: automation
   input:
