@@ -1,6 +1,6 @@
 blueprint:
   name: Exercise Detection
-  description: Sends notification of which entity has lost connection
+  description: Uses Home Assistant Companion app and Google activity sensor data to set a toggle of whether you have been active for the day. Resets daily. Recommended that you use a lower threshold as the sensor is inconsistant.
 
   domain: automation
   input:
@@ -43,9 +43,10 @@ blueprint:
       selector:
         entity:
           integration: mobile_app
+          domain: sensor
           
     activity_boolean:
-      name: Excercise Incomplete Boolean
+      name: Exercise Incomplete Boolean
       description: Helper that stays ON while activity for the day is below the threshold, resets daily
       selector:
         entity:
@@ -53,7 +54,7 @@ blueprint:
 
     time_reset:
       name: Reset Time
-      description: Time to reset the Excercise Incomplete Boolean every day. Recommended to set to midnight or if you excercise late 05:00 am
+      description: Time to reset the Exercise Incomplete Boolean every day. Recommended to set to midnight or if you exercise late 05:00 am
       selector:
         time:
 
