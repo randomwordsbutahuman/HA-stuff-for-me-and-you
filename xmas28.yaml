@@ -10,6 +10,11 @@ blueprint:
       description: Time at which selected lights will turn off
       selector:
         time:
+    sleep_time:
+      name: Sleep Time
+      description: Time at which selected lights will sleep
+      selector:
+        time:
     xmas_lights:
       name: Light(s)
       description: The light(s) to control
@@ -30,6 +35,7 @@ trigger:
     
 variables:
   stop_time_var: !input stop_time
+  sleep_time_var: !input sleep_time
   
 action:
   - choose:
@@ -42,7 +48,9 @@ action:
               entity_id: !input xmas_lights
       - conditions:
           - condition: template
-            value_template: '{{ trigger.now().strftime('%H:%M:00') == ''stop_time_var'' }}'
+            value_template: '{{ trigger.platform == ''time'' }}'
+          - condition: template
+            value_template: '{{ trigger.now > sleep_time_var }}'
         sequence:
           - service: switch.turn_off
             target: !input xmas_lights
