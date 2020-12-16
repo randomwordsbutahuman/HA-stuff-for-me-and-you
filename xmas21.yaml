@@ -42,7 +42,7 @@ action:
               entity_id: !input xmas_lights
       - conditions:
           - condition: template
-            value_template: '{{ trigger.now == stop_time_var }}'
+            value_template: '{{ trigger.now == ( stop_time_var | int ) }}'
         sequence:
           - service: switch.turn_off
             target: !input xmas_lights
