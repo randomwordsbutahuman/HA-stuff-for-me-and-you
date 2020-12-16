@@ -7,7 +7,7 @@ blueprint:
   input:
     name: stop_xmas_time
     selector:
-        time:
+      time:
     xmas_lights:
       name: Light(s)
       description: The light(s) to control
