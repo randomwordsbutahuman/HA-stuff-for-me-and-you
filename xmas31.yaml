@@ -28,7 +28,7 @@ blueprint:
       selector:
         target:
          device:
-            integration: WLED
+            integration: wled
             
 mode: single
 max_exceeded: silent
