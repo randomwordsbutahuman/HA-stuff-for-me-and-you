@@ -5,8 +5,9 @@ blueprint:
 
   domain: automation
   input:
-    stop_xmas_time:
-     name: Stop Time
+    stop_time:
+      name: Stop Time
+      description: Time at which selected lights will turn off
       selector:
         time:
     xmas_lights:
