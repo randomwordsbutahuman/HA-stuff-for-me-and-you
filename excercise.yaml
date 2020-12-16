@@ -1,0 +1,78 @@
+blueprint:
+  name: Exercise Detection
+  description: Sends notification of which entity has lost connection
+
+  domain: automation
+  input:
+    cycle_time:
+      name: Cycling Duration
+      description: Time to detect as completed for the day
+      selector:
+        number:
+          min: 1
+          max: 1400
+          mode: box
+
+  input:
+    running_time:
+      name: Running Duration
+      description: Time to detect as completed for the day
+      selector:
+        number:
+          min: 1
+          max: 1400
+          mode: box
+
+  input:
+    walk_time:
+      name: Walking Duration
+      description: Time to detect as completed for the day
+      selector:
+        number:
+          min: 1
+          max: 1400
+          mode: box
+          
+    activity_sensor:
+      name: Detected Activity Sensor
+      description: Device needs to run the official Home Assistant app with Google activity data
+      selector:
+        entity:
+          integration: mobile_app
+          
+    activity_boolean:
+      name: Excercise Incomplete Boolean
+      description: Helper that stays ON while activity for the day is below the threshold, resets daily
+      selector:
+        boolean:
+
+    time_reset:
+      name: Reset Time
+      description: Time to reset the Excercise Incomplete Boolean every day. Recommended to set to midnight or if you excercise late 05:00 am
+      selector:
+        time:
+
+mode: single
+
+trigger:
+  - platform: state
+    entity_id: sensor.sm_g960f_detected_activity
+    to: on_bicycle
+    for:
+      minutes: !input cycle_time
+  - platform: state
+    entity_id: sensor.sm_g960f_detected_activity
+    to: running
+    for:
+      minutes: !input running_time
+  - platform: state
+    entity_id: sensor.sm_g960f_detected_activity
+    to: walking
+    for:
+      minutes: !input walk_time
+condition: []
+action:
+  - service: input_boolean.turn_off
+    target: !input activity_boolean
+
+mode: single
