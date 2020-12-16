@@ -49,8 +49,6 @@ action:
       - conditions:
           - condition: template
             value_template: '{{ trigger.platform == ''time'' }}'
-          - condition: template
-            value_template: '{{ trigger.now > sleep_time_var }}'
         sequence:
           - service: switch.turn_off
             target: !input xmas_lights
