@@ -70,9 +70,18 @@ trigger:
     to: walking
     for:
       minutes: !input walk_time
-condition: []
-action:
-  - service: input_boolean.turn_off
-    target: !input activity_boolean
 
-mode: single
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.platform == ''state'' }}'
+        sequence:
+          - service: input_boolean.turn_off
+            target: !input activity_boolean
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.platform == ''time'' }}'
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input activity_boolean            
