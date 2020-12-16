@@ -25,7 +25,12 @@ trigger:
   - platform: sun
     event: sunset
     offset: '-00:05:00'
-
+  - platform: time
+    at: !input stop_time
+    
+variables:
+  stop_time_var: !input stop_time
+  
 action:
   - choose:
       - conditions:
@@ -35,3 +40,9 @@ action:
           - service: switch.turn_on
             data:
               entity_id: !input xmas_lights
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.now== stop_time_var }}'
+        sequence:
+          - service: switch.turn_off
+            target: !input xmas_lights
