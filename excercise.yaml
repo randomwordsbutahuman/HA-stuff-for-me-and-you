@@ -13,7 +13,6 @@ blueprint:
           max: 1400
           mode: box
 
-  input:
     running_time:
       name: Running Duration
       description: Time to detect as completed for the day
@@ -23,7 +22,6 @@ blueprint:
           max: 1400
           mode: box
 
-  input:
     walk_time:
       name: Walking Duration
       description: Time to detect as completed for the day
