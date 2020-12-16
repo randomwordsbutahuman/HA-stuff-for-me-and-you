@@ -5,7 +5,8 @@ blueprint:
 
   domain: automation
   input:
-    time:
+    selector:
+      time:
     xmas_lights:
       name: Light(s)
       description: The light(s) to control
