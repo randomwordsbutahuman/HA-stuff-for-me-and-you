@@ -22,7 +22,14 @@ blueprint:
         target:
           entity:
             domain: switch
-
+    wled_lights:
+      name: WLED Light(s)
+      description: The WLED light(s) to control
+      selector:
+        target:
+         device:
+            integration: WLED
+            
 mode: single
 max_exceeded: silent
 
@@ -46,9 +53,14 @@ action:
           - service: switch.turn_on
             data:
               entity_id: !input xmas_lights
+          - service: light.turn_on
+            data:
+              entity_id: !input wled_lights
       - conditions:
           - condition: template
             value_template: '{{ trigger.platform == ''time'' }}'
         sequence:
           - service: switch.turn_off
             target: !input xmas_lights
+          - service: light.turn_off
+            target: !input wled_lights
