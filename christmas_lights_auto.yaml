@@ -1,0 +1,81 @@
+blueprint:
+  name: Christmas Lights
+  description: Turns on the christmas lights during December at sunset, turns them off at set time and dims WLED lights.
+  domain: automation
+  input:
+    xmas_lights:
+      name: Xmas lights
+      description: Lights to turn on or off
+      selector:
+        target:
+            entity:
+                domain: switch
+    wled_lights:
+      name: WLED devices
+      description: Any WLED lights to dim automatically (nightlight mode)
+      selector:
+        target:
+            entity:
+                integration: WLED
+    stop_time:
+      name: Stop Time
+      description: Time at which selected lights will turn off
+      selector:
+        time:
+    sleep_time:
+      name: Sleep Time
+      description: Time at which WLED devices will start dimming
+      selector:
+        time:
+
+trigger:
+  - platform: sun
+    event: sunset
+    offset: '-00:05:00'
+  - platform: time
+    at: !input stop_time
+  - platform: time
+    at: !input sleep_time
+
+condition:
+  - condition: template
+    value_template: '{{ now().strftime(''%m'') == ''12'' }}'
+
+variables:
+  xmas_light: !input xmas_lights
+  wled_light: !input wled_lights
+  stop_time: !input stop_time
+  sleep_time: !input sleep_time
+  
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.platform == ''sun'' }}'
+        sequence:
+          - service: switch.turn_on
+            data:
+              entity_id: xmas_light
+          - type: turn_on
+            device_id: wled_light
+            entity_id: wled_light
+            domain: light
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ trigger.entity_id == stop_time
+              }}
+        sequence:
+          - service: switch.turn_off
+            data: {}
+            entity_id: xmas_light
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ trigger.entity_id ==
+              sleep_time }}
+        sequence:
+          - type: turn_on
+            device_id: wled_light
+            entity_id: switch.wled_nightlight
+            domain: switch
