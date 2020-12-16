@@ -7,29 +7,35 @@ blueprint:
     cycle_time:
       name: Cycling Duration
       description: Time to detect as completed for the day
+      default: 5
       selector:
         number:
           min: 1
           max: 1400
           mode: box
+          unit_of_measurement: minutes
 
     running_time:
       name: Running Duration
       description: Time to detect as completed for the day
+      default: 5
       selector:
         number:
           min: 1
           max: 1400
           mode: box
+          unit_of_measurement: minutes
 
     walk_time:
       name: Walking Duration
       description: Time to detect as completed for the day
+      default: 5
       selector:
         number:
           min: 1
           max: 1400
           mode: box
+          unit_of_measurement: minutes
           
     activity_sensor:
       name: Detected Activity Sensor
@@ -42,7 +48,8 @@ blueprint:
       name: Excercise Incomplete Boolean
       description: Helper that stays ON while activity for the day is below the threshold, resets daily
       selector:
-        boolean:
+        entity:
+         domain: input_boolean
 
     time_reset:
       name: Reset Time
