@@ -1,0 +1,66 @@
+blueprint:
+  name: Low Battery TTS Notification
+  description: This blueprint will send a TTS message when a device's battery
+    is low
+  domain: automation
+  input:
+    device:
+      name: Device
+      description: The device that has a battery level.
+      selector:
+        entity:
+          domain: sensor
+          device_class: battery
+    media_player:
+      name: Media Player
+      description: The media player to send the TTS message to.
+      selector:
+        entity:
+          domain: media_player
+    media_player_volume:
+      name: Media Player Volume (Optional)
+      description: Set the media player's volume. (Leave at 0 or unset to leave unchanged)
+      default: 0.0
+      selector:
+        number:
+          min: 0.0
+          max: 1.0
+          step: 0.1
+          mode: slider
+    message:
+      name: Message (Optional)
+      description: 'Default: "Battery is low on {{ device_name }}"'
+      default: Battery is low on {{ device_name }}
+    battery_level:
+      name: Battery level
+      description: What level the device should be to trigger the notification.
+      default: 10
+      selector:
+        number:
+          min: 1.0
+          max: 100.0
+          unit_of_measurement: '%'
+          step: 1.0
+          mode: slider
+variables:
+  battery_level: !input 'battery_level'
+  device: !input 'device'
+  device_name: '{{ states[device].name }}'
+  media_player_volume: !input 'media_player_volume'
+trigger:
+  platform: numeric_state
+  entity_id: !input 'device'
+  below: !input 'battery_level'
+action:
+- choose:
+  default:
+  - condition: template
+    value_template: '{{ media_player_volume != 0.0 }}'
+  - service: media_player.volume_set
+    entity_id: !input 'media_player'
+    data:
+      volume_level: '{{ media_player_volume }}'
+- service: tts.google_say
+  entity_id: !input 'media_player'
+  data:
+    message: !input 'message'
