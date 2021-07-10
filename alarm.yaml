@@ -32,7 +32,7 @@ blueprint:
       description: Is turned on with Alarm
       selector:
         entity:
-          domain: switch
+          domain: input_boolean
 
 trigger:
   - platform: time
