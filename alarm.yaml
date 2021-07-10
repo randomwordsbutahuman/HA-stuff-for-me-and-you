@@ -1,0 +1,68 @@
+blueprint:
+  name: Morning Alarm
+  description: Runs a script on certain times based on workday status
+  domain: automation
+  input:
+    time_1:
+      name: Workday Time
+      description: This is the alarm time for a work day
+      selector:
+        entity:
+          domain: input_datetime
+    time_2:
+      name: Day Off Time
+      description: This is the alarm time for non-working days
+      selector:
+        entity:
+          domain: input_datetime
+    sensor_work:
+      name: Workday Sensor
+      description: Binary sensor for workdays
+      selector:
+        entity:
+          domain: binary_sensor
+    alarm_script:
+      name: Alarm Script
+      description: What to run at set times
+      selector:
+        entity:
+          domain: script
+    alarm_boolean:
+      name: Alarm Switch
+      description: Is turned on with Alarm
+      selector:
+        entity:
+          domain: switch
+
+trigger:
+  - platform: time
+    at: !input time_1
+    id: work
+  - platform: time
+    at: !input time_2
+    id: day off
+condition:
+  - condition: or
+    conditions:
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: !input sensor_work
+            state: 'on'
+          - condition: trigger
+            id: work
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: !input sensor_work
+            state: 'off'
+          - condition: trigger
+            id: day off
+      - condition: trigger
+        id: day off
+action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: !input alarm_boolean
+  - service: !input alarm_script
+mode: single
