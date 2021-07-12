@@ -40,7 +40,7 @@ trigger:
     id: work
   - platform: time
     at: !input time_2
-    id: day off
+    id: day_off
 condition:
   - condition: or
     conditions:
@@ -57,9 +57,7 @@ condition:
             entity_id: !input sensor_work
             state: 'off'
           - condition: trigger
-            id: day off
-      - condition: trigger
-        id: day off
+            id: day_off
 action:
   - service: input_boolean.turn_on
     target:
