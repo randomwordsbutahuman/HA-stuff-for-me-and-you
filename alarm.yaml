@@ -63,4 +63,4 @@ action:
     target:
       entity_id: !input alarm_boolean
   - service: !input alarm_script
-mode: single
+mode: restart
